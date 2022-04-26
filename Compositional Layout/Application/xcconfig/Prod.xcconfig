@@ -1,0 +1,15 @@
+//
+//  Prod.xcconfig
+//  Compositional Layout
+//
+//  Created by Oğuz Karatoruk on 25.04.2022.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+api_webservice_url = jsonplaceholder.typicode.com
+protocol = https
+
+APP_NAME = $(inherited)
+APP_BUNDLE_IDENTIFIER = com.oguzkr.Compositional-Layout
