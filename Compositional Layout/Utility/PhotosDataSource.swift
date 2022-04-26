@@ -23,7 +23,10 @@ class PhotosDataSource: NSObject {
 			let title: String
 			
 			/// The URL for the item’s thumbnail photo.
-			let thumbnailURL: URL
+			let thumbnailUrl: URL
+            
+            let url: URL
+
 		}
 		
 		/// The items that comprise the section.
@@ -49,13 +52,13 @@ class PhotosDataSource: NSObject {
 	init(photos: [Photo], sectionStyle: SectionStyle) {
 		switch sectionStyle {
 		case .single:
-			self.sections = [Section(items: photos.map { Section.Item(identifier: $0.id, title: $0.title, thumbnailURL: $0.thumbnailUrl)})]
+            self.sections = [Section(items: photos.map { Section.Item(identifier: $0.id, title: $0.title, thumbnailUrl: $0.thumbnailUrl, url: $0.url)})]
 			
         case .byAlbum(let maximumItemsPerAlbum, let maximumNumberOfAlbums):
 			var sectionNumberToItems: [Int: [Section.Item]] = [:]
 			
 			for photo in photos {
-				let item = Section.Item(identifier: photo.id, title: photo.title, thumbnailURL: photo.thumbnailUrl)
+                let item = Section.Item(identifier: photo.id, title: photo.title, thumbnailUrl: photo.thumbnailUrl, url: photo.url)
 				
 				if let existingItems = sectionNumberToItems[photo.albumId] {
 					sectionNumberToItems[photo.albumId] = existingItems + [item]
