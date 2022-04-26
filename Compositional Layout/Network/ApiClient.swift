@@ -53,7 +53,7 @@ class ApiClient {
     
     func getPhotos(albumId: Int, completion: @escaping (_ photos: [Photo]?, _ success: Bool) -> ()){
         let parameters: Parameters = [ "albumId": albumId ]
-        AF.request(Endpoint.baseURL(.photos)(), encoding: URLEncoding.default).responseData { response in
+        AF.request(Endpoint.baseURL(.photos)(), parameters: parameters,encoding: URLEncoding.default).responseData { response in
             switch response.result{
             case .success(let data):
                 do {
