@@ -12,7 +12,7 @@ class UserPhotosViewModel {
     let Client = ApiClient()
     
     var users = [User]()
-    var photos = [Photos]()
+    var photos = [Photo]()
     var albums = [Album]()
     
     func fetchUsers(completed: @escaping(Bool) -> Void) {

@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - Album
-struct Album: Codable {
+struct Album: Decodable {
     let userId, id: Int?
     let title: String?
 }

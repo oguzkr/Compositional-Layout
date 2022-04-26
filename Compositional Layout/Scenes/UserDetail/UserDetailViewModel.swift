@@ -10,7 +10,7 @@ import Foundation
 class UserDetailViewModel {
     
     let network = ApiClient()
-    var photos = [Photos]()
+    var photos = [Photo]()
     
     func fetchPhotoDetail(albumId: Int, completed: @escaping(Bool) -> Void) {
         network.getPhotos(albumId: albumId) { result, success in

@@ -5,11 +5,13 @@
 //  Created by Oğuz Karatoruk on 26.04.2022.
 //
 
+
 import Foundation
 
-// MARK: - Photos
-struct Photos: Codable {
-    let albumId, id: Int
+struct Photo: Decodable {
+    let albumId: Int
+    let id: Int
     let title: String
-    let url, thumbnailUrl: URL
+    let url: URL
+    let thumbnailUrl: URL
 }

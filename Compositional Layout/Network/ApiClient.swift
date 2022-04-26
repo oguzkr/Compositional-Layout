@@ -51,13 +51,13 @@ class ApiClient {
         }
     }
     
-    func getPhotos(albumId: Int, completion: @escaping (_ photos: [Photos]?, _ success: Bool) -> ()){
+    func getPhotos(albumId: Int, completion: @escaping (_ photos: [Photo]?, _ success: Bool) -> ()){
         let parameters: Parameters = [ "albumId": albumId ]
-        AF.request(Endpoint.baseURL(.photos)(),parameters: parameters, encoding: URLEncoding.default).responseData { response in
+        AF.request(Endpoint.baseURL(.photos)(), encoding: URLEncoding.default).responseData { response in
             switch response.result{
             case .success(let data):
                 do {
-                    let result = try JSONDecoder().decode([Photos].self, from: data)
+                    let result = try JSONDecoder().decode([Photo].self, from: data)
                     completion(result, true)
                 } catch let error {
                     completion(nil, false)
