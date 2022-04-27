@@ -8,27 +8,45 @@
 import UIKit
 import Kingfisher
 
+protocol UpdateFavoriteDelegate {
+    func updateFavStatus()
+}
+
 class UserDetailVC: UIViewController {
 
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var favButton: UIButton!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }
-    
-    func bind(_ photoURL: URL, _ user: User){
-        nameLabel.text = user.name
-        imageView.kf.setImage(with: photoURL)
-    }
+    var photo: Photo?
+    let memberManager = MemberManager()
+    var delegate: UpdateFavoriteDelegate? = nil
 
-    @IBAction func clickedDismiss(_ sender: Any) {
-        self.dismiss(animated: true)
+    func bind(_ photo: Photo, _ user: User, thumbnail: Bool){
+        self.photo = photo
+        nameLabel.text = user.name
+        if thumbnail {
+            imageView.kf.setImage(with: photo.thumbnailUrl)
+        } else {
+            imageView.kf.setImage(with: photo.url)
+        }
+        favButton.isSelected = memberManager.isFavorite(photoId: photo.id)
     }
     
     @IBAction func clickedFav(_ sender: Any) {
-        favButton.isSelected.toggle()
+        if let photo = self.photo {
+            if memberManager.isFavorite(photoId: photo.id) {
+                memberManager.removePhotoFromFav(photoId: photo.id)
+            } else {
+                memberManager.addPhotoToFavorite(photoId: photo.id)
+            }
+            favButton.isSelected.toggle()
+            delegate?.updateFavStatus()
+        }
     }
+    
+    @IBAction func clickedDismiss(_ sender: Any) {
+        self.dismiss(animated: true)
+    }
+
 }

@@ -13,10 +13,10 @@ class UserPhotosVC: UIViewController, UICollectionViewDelegate {
     @IBOutlet weak var collectionView: UICollectionView!
 
     let viewModel = UserPhotosViewModel()
+    let memberManager = MemberManager()
     var users = [User]()
     var photos = [Photo]()
     var dataSource: PhotosDataSource?
-
     override func viewDidLoad() {
         super.viewDidLoad()
         registerCells()
@@ -58,6 +58,7 @@ class UserPhotosVC: UIViewController, UICollectionViewDelegate {
                                     }
                                 } else {
                                     self.showAlert(titleInput: "Success", messageInput: "Task failed successfully.")
+                                    ProgressHUD.dismiss()
                                 }
                             }
                         }
@@ -108,12 +109,13 @@ class UserPhotosVC: UIViewController, UICollectionViewDelegate {
         }
     }
     
-    func showPhoto(_ photoUrl: URL, _ user: User){
+    func showPhoto(_ photo: Photo, _ user: User, thumbnail: Bool){
         let storyboard = UIStoryboard(name: "UserPhoto", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "userPhoto") as! UserDetailVC
         self.modalPresentationStyle = .overCurrentContext
         self.present(vc, animated: true, completion: nil)
-        vc.bind(photoUrl, user)
+        vc.delegate = self
+        vc.bind(photo, user, thumbnail: thumbnail)
     }
     
 }
@@ -136,10 +138,9 @@ extension UserPhotosVC: UICollectionViewDataSource {
         }
         if let photo = dataSource?.sections[indexPath.section].items[indexPath.item] {
             if indexPath.row % 5 != 0  {
-                cell.viewModel = PhotoCell.ViewModel(identifier: photo.identifier, imageURL: photo.thumbnailUrl)
+                cell.viewModel = PhotoCell.ViewModel(identifier: photo.id, imageURL: photo.thumbnailUrl)
             } else {
-                cell.viewModel = PhotoCell.ViewModel(identifier: photo.identifier, imageURL: photo.url)
-
+                cell.viewModel = PhotoCell.ViewModel(identifier: photo.id, imageURL: photo.url)
             }
         }
         return cell
@@ -147,10 +148,11 @@ extension UserPhotosVC: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let photo = dataSource?.sections[indexPath.section].items[indexPath.item] {
+            let selectedPhoto = Photo(albumId: photo.albumId, id: photo.id, title: photo.title, url: photo.url, thumbnailUrl: photo.thumbnailUrl)
             if indexPath.row % 5 != 0 {
-                self.showPhoto(photo.thumbnailUrl, self.users[indexPath.section])
+                self.showPhoto(selectedPhoto, self.users[indexPath.section], thumbnail: true)
             } else {
-                self.showPhoto(photo.url, self.users[indexPath.section])
+                self.showPhoto(selectedPhoto, self.users[indexPath.section], thumbnail: true)
             }
         }
     }
@@ -178,5 +180,11 @@ extension UserPhotosVC: UICollectionViewDataSource {
             assertionFailure("Unexpected element kind: \(kind).")
             return UICollectionReusableView()
         }
+    }
+}
+
+extension UserPhotosVC: UpdateFavoriteDelegate {
+    func updateFavStatus() {
+        collectionView.reloadData()
     }
 }
