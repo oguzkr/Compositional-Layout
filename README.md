@@ -14,4 +14,4 @@
 ##### -Kingfisher for customization of images from api
 
 ## Extra
-##### User Compositional layout for UICollectionView
+##### Used Compositional layout for UICollectionView
