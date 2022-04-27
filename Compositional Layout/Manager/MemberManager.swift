@@ -11,5 +11,11 @@ class MemberManager {
     
     static let shared = MemberManager()
     
+    func setMemberFavorites(){
+        
+    }
     
+    func getMemberFavorites(){
+        
+    }
 }

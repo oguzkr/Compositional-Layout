@@ -11,17 +11,23 @@ import Kingfisher
 
 final class PhotoCell: UICollectionViewCell {
     
+    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet weak var buttonFav: UIButton!
+    
     struct ViewModel {
         let identifier: Int
         let imageURL: URL
     }
-    
-    @IBOutlet private weak var imageView: UIImageView!
-    
+
     var viewModel: ViewModel? {
         didSet {
 			imageView.kf.cancelDownloadTask()
             imageView.kf.setImage(with: viewModel?.imageURL)
         }
     }
+    
+    @IBAction func clickedFav(_ sender: Any) {
+        
+    }
+    
 }

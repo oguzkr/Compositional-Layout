@@ -108,6 +108,14 @@ class UserPhotosVC: UIViewController, UICollectionViewDelegate {
         }
     }
     
+    func showPhoto(_ photoUrl: URL, _ user: User){
+        let storyboard = UIStoryboard(name: "UserPhoto", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "userPhoto") as! UserDetailVC
+        self.modalPresentationStyle = .overCurrentContext
+        self.present(vc, animated: true, completion: nil)
+        vc.bind(photoUrl, user)
+    }
+    
 }
 
 extension UserPhotosVC: UICollectionViewDataSource {
@@ -139,9 +147,12 @@ extension UserPhotosVC: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let photo = dataSource?.sections[indexPath.section].items[indexPath.item] {
-            print("PHOTO", photo)
+            if indexPath.row % 5 != 0 {
+                self.showPhoto(photo.thumbnailUrl, self.users[indexPath.section])
+            } else {
+                self.showPhoto(photo.url, self.users[indexPath.section])
+            }
         }
-        print("USER", self.users[indexPath.section])
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -160,7 +171,7 @@ extension UserPhotosVC: UICollectionViewDataSource {
             
         case "new-banner":
             let bannerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "NewBannerSupplementaryView", for: indexPath)
-            bannerView.isHidden = indexPath.row % 5 != 0 // show on every 5th item
+            bannerView.isHidden = indexPath.row % 5 != 0 
             return bannerView
             
         default:
