@@ -9,10 +9,6 @@ import Foundation
 import Alamofire
 
 class ApiClient {
-    
-    //https://jsonplaceholder.typicode.com/users/ -> get userId
-    //https://jsonplaceholder.typicode.com/albums?userId=2 -> get albumId
-    //https://jsonplaceholder.typicode.com/photos?albumId=11 -> getPhotos
 
     func getUsers(completion: @escaping (_ users: [User]?, _ success: Bool) -> ()){
         AF.request(Endpoint.baseURL(.users)(), encoding: URLEncoding.default).responseData { response in
