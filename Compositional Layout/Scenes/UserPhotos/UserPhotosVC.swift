@@ -152,7 +152,7 @@ extension UserPhotosVC: UICollectionViewDataSource {
             if indexPath.row % 5 != 0 {
                 self.showPhoto(selectedPhoto, self.users[indexPath.section], thumbnail: true)
             } else {
-                self.showPhoto(selectedPhoto, self.users[indexPath.section], thumbnail: true)
+                self.showPhoto(selectedPhoto, self.users[indexPath.section], thumbnail: false)
             }
         }
     }
